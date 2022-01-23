@@ -1,2 +1,2 @@
-# tietokantasovellus
-hy-kurssin sovellus
+# keskustelufoorumisovellus
+hy:n tietokantasovellus-kurssille tehtävä keskustelufoorumisovellus
