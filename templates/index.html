@@ -1,2 +1,10 @@
 <h2>Topin keskustelufoorumi</h2>
+<a href="/subforum">Pääfoorumi</a>
+<a href="/subforum2">Kakkosfoorumi</a>
+{% if session.username %}
+<p>Olet kirjautunut nimellä {{ session.username }}</p>
+<a href="/logout">Kirjaudu ulos</a>
+{% else %}
 <a href="/login">Kirjaudu sisään</a>
+<a href="/register">Rekisteröidy</a>
+{% endif %}
