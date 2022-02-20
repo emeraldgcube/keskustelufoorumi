@@ -4,8 +4,14 @@
 <body>
 <h2>Topin keskustelufoorumi</h2>
 <h3>Foorumit</h3>
-<li><a href="/subforum">Pääfoorumi</a></li>
-<li><a href="/subforum2">Kakkosfoorumi</a></li>
+{% if forums %}
+{% for forum in forums %}
+
+<b><li><a href="/{{forum[0]}}">{{forum[1]}}</a></li></b> 
+{{forum[2]}}
+
+    {% endfor %}
+    {% endif %}
 <br>
 </body>
 {% endblock %}
