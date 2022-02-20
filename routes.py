@@ -13,14 +13,6 @@ def index():
     result = db.session.execute(sql)
     forums = result.fetchall()
     return render_template("index.html", forums=forums)
-
-@app.route("/subforum")
-def forum():
-    sql = "SELECT M.content, U.username, M.sent_at as id FROM messages M, users U WHERE M.user_id=U.id ORDER BY M.id"
-    result = db.session.execute(sql)
-    messages = result.fetchall()
-
-    return render_template("forum.html", messages=messages)
               
 @app.route("/logout")
 def logout():
@@ -55,26 +47,21 @@ def login():
         else:
             return render_template("error.html", message="Väärä tunnus tai salasana")
 
-@app.route("/testisivu")
-def testisivu():
-    return render_template("test.html")
-    
-
 @app.route("/topics/<int:id>")
 def topic(id):
     sql = "SELECT M.content, U.username, M.sent_at as id FROM messages M, users U WHERE M.user_id=U.id and M.topic_id=:topicid ORDER BY M.id"
     result = db.session.execute(sql, {"topicid":id})
     messages = result.fetchall()
-    return render_template("topic.html", messages=messages)
+    return render_template("topic.html", messages=messages, forum_id=id)
 
 @app.route("/<int:id>")
 def subforum(id):
-    sql = "SELECT T.title, M.content, U.username, T.id FROM topics T, messages M, users U, forums F WHERE F.id = :id AND F.id = T.forum_id AND T.id=M.topic_id AND M.user_id=U.id ORDER BY M.id"
+    sql = "SELECT T.title, M.content, U.username, T.id, (SELECT MIN(M.id) FROM topics a LEFT JOIN MESSAGES M ON a.id = M.topic_id WHERE a.forum_id = T.id) FROM topics T, messages M, users U, forums F WHERE F.id = :id AND F.id = T.forum_id AND T.id=M.topic_id AND M.user_id=U.id ORDER BY M.id"
     result = db.session.execute(sql, {"id":id})
     topics = result.fetchall()
-    return render_template("forum.html", topics=topics)
+    return render_template("forum.html", topics=topics, forum_id=id)
 
-@app.route("/topics/<int:topic_id>/newmessage", methods=["GET", "POST"])
+@app.route("/<int:forum_id>/<int:topic_id>/newmessage", methods=["GET", "POST"])
 @app.route("/<int:forum_id>/newtopic")
 def send(forum_id, topic_id=None):
     if request.method == "GET":

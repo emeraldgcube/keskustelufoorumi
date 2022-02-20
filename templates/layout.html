@@ -3,8 +3,7 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 
 <title>Topin foorumi - {% block title %}{% endblock %}</title>
-<h1>Topi's forum</h1>
-<a href="/">Etusivu</a>
+<a href="/"><h1>Topi's forum</h1></a>
 {% if session.username %}
 <p>Olet kirjautunut nimellä {{ session.username }}</p>
 <li><a href="/logout">Kirjaudu ulos</a></li>
