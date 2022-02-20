@@ -9,7 +9,10 @@ import messages
 @app.route("/")
 @app.route("/index")
 def index():
-    return render_template("index.html")
+    sql = "SELECT id, name, description FROM forums"
+    result = db.session.execute(sql)
+    forums = result.fetchall()
+    return render_template("index.html", forums=forums)
 
 @app.route("/subforum")
 def forum():
@@ -23,8 +26,6 @@ def forum():
 def logout():
     users.logout()
     return redirect("/") 
-
-@app.route("/")
 
 
 @app.route("/register", methods=["GET", "POST"])
