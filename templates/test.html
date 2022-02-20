@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}
+TESTU SIVU
+{% endblock %}
+<a href="/">Etusivulle</a>
+{% block content %}
+suka bleet suka bleet nits nats zukker beerg
+<form action="/subforum/send" method="post">
+    Viesti: <br>
+    <input name ="title"/>
+    <textarea name="content" rows="3" cols="50"></textarea>
+    <br>
+    <input type="submit" value="Lähetä">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    </form>
+    
+{% endblock %}

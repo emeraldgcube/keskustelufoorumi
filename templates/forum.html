@@ -1,14 +1,17 @@
+{% extends "layout.html" %}
+{% block title %} Foorumi {% endblock %}
+{% block content %}
 <hr>
-{% if messages %}
-{% for message in messages %}
-<i>Viesti:</i> {{ message[0] }}
+{% if topics %}
+{% for topic in topics %}
+<i>Aihe: </i><a href="topics/{{topic[3]}}">{{ topic[0] }}</a>
 <p>
-<i>Lähettäjä:</i> {{ message[1] }}
+<i>Lähettäjä:</i> {{ topic[1] }}
 <p>
-<i>Aika:</i> {{ message[2] }} <!--.strftime("%Y-%m-%d %H:%M:%S"-->
+<i>Aika:</i> {{ topic[2] }} <!--.strftime("%Y-%m-%d %H:%M:%S"-->
 <hr>
 {% endfor %}
 {% endif %}
-<a href="/subforum/send">Kirjoita viesti</a><br>
-</br>
+<a href="/subforum/newtopic">Aloita viestiketju</a><br>
+<br>
 <a href="/">Etusivulle</a>

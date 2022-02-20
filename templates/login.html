@@ -1,3 +1,6 @@
+{% extends "layout.html" %}
+{% block title %} Etusivu{% endblock %}
+{% block content %}
 <form action="/login" method="post">
 Käyttäjänimi:
 <input type="text" name="username">
@@ -6,4 +9,4 @@ Salasana:
 <input type="password" name="password">
 <input type="submit" value="Kirjaudu sisään">
 </form>
-    
+{% endblock %}

@@ -1,10 +1,11 @@
+{% extends "layout.html" %}
+{% block title %} Etusivu{% endblock %}
+{% block content %}
+<body>
 <h2>Topin keskustelufoorumi</h2>
-<a href="/subforum">Pääfoorumi</a>
-<a href="/subforum2">Kakkosfoorumi</a>
-{% if session.username %}
-<p>Olet kirjautunut nimellä {{ session.username }}</p>
-<a href="/logout">Kirjaudu ulos</a>
-{% else %}
-<a href="/login">Kirjaudu sisään</a>
-<a href="/register">Rekisteröidy</a>
-{% endif %}
+<h3>Foorumit</h3>
+<li><a href="/subforum">Pääfoorumi</a></li>
+<li><a href="/subforum2">Kakkosfoorumi</a></li>
+<br>
+</body>
+{% endblock %}
