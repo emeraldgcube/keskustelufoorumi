@@ -10,7 +10,6 @@ Ominaisuuksia ovat:
 - Käyttäjä voi muokata luomansa keskustelun tai viestin otsikkoa tai sisältöä
 - Käyttäjä voi etsiä tietyn sanan sisältäviä tai tietyn käyttäjän kirjoittamia viestejä
 - Moderaattori voi poistaa viestejä
-- Admin voi lisätä tai yhdistää aihealueita
 - Admin voi luoda salatun keskustelualueen, johon vain valituilla käyttäjillä on pääsy
 
 Jokainen foorumin käyttäjä on peruskäyttäjä, moderaattori tai admin.
@@ -19,11 +18,14 @@ Jokainen foorumin käyttäjä on peruskäyttäjä, moderaattori tai admin.
 
 ### [Linkki heroku-sovellukseen](https://topin-foorumi.herokuapp.com/subforum)
 
-- Foorumi on saatu pyörimään 
-- Tällä hetkellä käytettävät ominaisuudet vastaavat paljolti esimerkkisovellusta
-- Lisäominaisuuksia on aloiteltu
-  - Esimerkiksi tulevia tietokantatauluja on jo alustettu ja suunniteltu
-   - Esim. Bannit, moderaattorioikeudet yms tulossa
-   - Sekä myöskin tarkoituksena mahdollistaa x määrä alafoorumeita
-  - Myös seuraava askel asettaa tarkistuksia sivuihin: sivu antanee tällä hetkellä virheitä jos sivuja selaisi kirjautumattomana
-  - Yms.
+## Tilanne välipalautus 2:sessa
+
+- Foorumi on harmillisesti hieman rikkinäinen tällä hetkellä, tietokantoja on juuri muutettu ja siirrytty useaan foorumiin ja topicceihin yhden viestipalstan sijaan.
+- Topic sivu ei myöskään toimi halutulla tavalla tällä hetkellä, vaan näyttää kaikki foorumin viestit. Ratkaisua etsiessä...
+- Toiminnallisuudet ovat laajentuneet, tietokannat ovat pitkälti lopullisessa muodossaan
+- Viime välipalautuksesta on otettu huomioon mm. pitkät syötteet, bugi session clearaamisessa, committien kieli (ainakin yritetty :D) yms.
+- Ulkomuoto saatu jo tyydyttäväksi
+- Koodia refaktoroitu ja laajennettu
+
+Toiminnallisuudessa pyritään ennen viimeistä palautusta pääsemään yllä mainittuihin kriteereihin
+
