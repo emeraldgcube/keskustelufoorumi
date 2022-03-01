@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block title %} Etusivu{% endblock %}
 {% block content %}
-<form action="/login" method="post">
+<form action="/login" method="post" onsubmit="return check(this)">
 Käyttäjänimi:
 <input type="text" name="username">
 <br>
@@ -10,3 +10,17 @@ Salasana:
 <input type="submit" value="Kirjaudu sisään">
 </form>
 {% endblock %}
+<script>
+    function check(form) {
+        if (form.username.value.length == 0) {
+            alert("Käyttäjänimi puuttuu!");
+            return false;
+        }
+        if (form.password.value.length == 0) {
+            alert("Älä unohda salasanaa!");
+            return false;
+        }
+        return true;
+    }
+    </script>
+    

@@ -37,11 +37,13 @@ def recordBan(username, message):
     db.session.execute(sql, {"user_id":user_id, "message":message})
     db.session.commit()
 
+#tarpeellinen?
 def findUserId(username):
     sql = "SELECT id FROM users WHERE username=:username"
     result = db.session.execute(sql, {"username":username})
     userid = result.fetchone()
     return userid
+
 
 def register(username, password):
     hash_value = generate_password_hash(password)

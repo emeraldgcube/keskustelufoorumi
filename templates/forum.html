@@ -4,15 +4,28 @@
 <hr>
 {% if topics %}
 {% for topic in topics %}
-<i>Aihe: </i><a href="/topics/{{topic[3]}}">{{ topic[0] }}</a>
+<i>Aihe: </i><a href="/{{forum_id}}/{{topic[0]}}">{{ topic[1] }}</a>
 <p>
-<i>Lähettäjä:</i> {{ topic[1] }}
+<i>Lähettäjä:</i> {{ topic[2] }}
 <p>
-<i>Aika:</i> {{ topic[2] }} <!--.strftime("%Y-%m-%d %H:%M:%S"-->
+<i>Aika:</i> {{ topic[4].strftime("%Y-%m-%d %H:%M") }}
+<p>
+Ensimmäinen viesti: 
+{% if topic[3]|length > 50 %}
+{{topic[3][:50]}}...
+{% else %}
+{{topic[3]}}
+{% endif %}
 <hr>
 {% endfor %}
+{% else %}
+Alueella ei ole viestiketjuja. Haluatko aloittaa sellaisen?
 {% endif %}
+{% if session.username %}
 <a href="/{{forum_id}}/newtopic">Aloita viestiketju</a><br>
+{% else %}
+Kirjaudu sisään aloittaaksesi viestiketjun
+{% endif %}
 <br>
 <a href="/">Etusivulle</a>
 {% endblock %}

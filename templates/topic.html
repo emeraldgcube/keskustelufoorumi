@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %} messages[0][0] {% endblock %}
+{% block title %} {{messages[0][0]}} {% endblock %}
 {% block content %}
 <hr>
 {% if messages %}
@@ -8,11 +8,15 @@
 <p>
 <i>Lähettäjä:</i> {{ message[1] }}
 <p>
-<i>Aika:</i> {{ message[2] }} <!--.strftime("%Y-%m-%d %H:%M:%S"-->
+<i>Aika:</i> {{ message[2].strftime("%Y-%m-%d %H:%M:%S") }}
 <hr>
 {% endfor %}
 {% endif %}
-<a href="/subforum/send">Kirjoita viesti</a><br>
+{% if session.username %}
+<a href="/{{forum_id}}/{{topic_id}}/newmessage">Kirjoita viesti</a><br>
+{% else %}
+Kirjaudu sisään vastataksesi ketjuun
+{% endif %}
 <br>
 <a href="/">Etusivulle</a>
 {% endblock %}

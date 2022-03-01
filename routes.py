@@ -47,35 +47,40 @@ def login():
         else:
             return render_template("error.html", message="Väärä tunnus tai salasana")
 
-@app.route("/topics/<int:id>")
-def topic(id):
+@app.route("/<int:forum_id>/<int:topic_id>")
+def topic(forum_id, topic_id):
     sql = "SELECT M.content, U.username, M.sent_at as id FROM messages M, users U WHERE M.user_id=U.id and M.topic_id=:topicid ORDER BY M.id"
-    result = db.session.execute(sql, {"topicid":id})
+    result = db.session.execute(sql, {"topicid":topic_id})
     messages = result.fetchall()
-    return render_template("topic.html", messages=messages, forum_id=id)
+    return render_template("topic.html", messages=messages, forum_id=forum_id, topic_id=topic_id)
 
-@app.route("/<int:id>")
-def subforum(id):
-    sql = "SELECT T.title, M.content, U.username, T.id, (SELECT MIN(M.id) FROM topics a LEFT JOIN MESSAGES M ON a.id = M.topic_id WHERE a.forum_id = T.id) FROM topics T, messages M, users U, forums F WHERE F.id = :id AND F.id = T.forum_id AND T.id=M.topic_id AND M.user_id=U.id ORDER BY M.id"
-    result = db.session.execute(sql, {"id":id})
+@app.route("/<int:forum_id>")
+def subforum(forum_id):
+    sql = "select distinct on (m.topic_id) m.topic_id, t.title,  u.username, m.content, m.sent_at from messages m left join topics t on m.topic_id = t.id left join users u on u.id = m.user_id where t.forum_id = :forum_id"
+    result = db.session.execute(sql, {"forum_id":forum_id})
     topics = result.fetchall()
-    return render_template("forum.html", topics=topics, forum_id=id)
+    return render_template("forum.html", topics=topics, forum_id=forum_id)
 
 @app.route("/<int:forum_id>/<int:topic_id>/newmessage", methods=["GET", "POST"])
-@app.route("/<int:forum_id>/newtopic")
+@app.route("/<int:forum_id>/newtopic", methods=["GET", "POST"])
 def send(forum_id, topic_id=None):
     if request.method == "GET":
-        return render_template("send.html")
+        return render_template("send.html", forum_id=forum_id, topic_id=topic_id)
     if request.method == "POST":
         if session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
-        title = request.form["title"]
+        title = None
+        if not topic_id:
+            title = request.form["title"]
         content = request.form["content"]
-        sent = messages.checkMessage() 
+        user_id = users.user_id()
+        sent = messages.checkMessage(content, title) 
         if sent == True:
-            messages.sendMessage()
-            return redirect("/subforum")
+            messages.sendMessage(content, user_id, forum_id, title, topic_id)
+            return redirect("/" + str(forum_id))
         return render_template("error.html", error=sent)
+
+
 
 @app.route("/controlusers", methods=["GET", "POST"])
 def controlusers():

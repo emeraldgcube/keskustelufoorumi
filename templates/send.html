@@ -1,22 +1,28 @@
 {% extends "layout.html" %}
 {% block title %} Etusivu{% endblock %}
 {% block content %}
-<form action="/subforum/send" method="post">
+{% if not topic_id %}
+<form action="/{{forum_id}}/newtopic" method="post" onsubmit="return check(this)">
+Otsikko: <input type="text" name="title"/>
+{% else %}
+<form action="/{{forum_id}}/{{topic_id}}/newmessage" method="post">
+{% endif %}
+<br>
 Viesti: <br>
-<input name ="title"/>
 <textarea name="content" rows="3" cols="50"></textarea>
 <br>
-<input type="submit" value="Lähetä">
-<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+<input type="submit" value="Lähetä"/>
+<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}"/>
 </form>
 {% endblock %}
 
 <script>
     function check(form) {
+        if (form.title) {
         if (form.title.value.length > 100) {
             alert("Otsikko on liian pitkä");
             return false;
-        }
+        }}
         if (form.message.value.length > 5000) {
             alert("Viesti on liian pitkä");
             return false;
