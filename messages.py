@@ -2,6 +2,12 @@ from curses.ascii import NUL
 from db import db
 import users
 import sys
+
+def getTopicMessages(topic_id):
+    sql = "SELECT T.title, U.username, M.sent_at, U.user FROM messages M, users U WHERE M.user_id=U.id ORDER BY M.id"
+    result = db.session.execute(sql, {"topic":topic_id})
+    messages = result.fetchall()
+
 def sendMessage(content, user_id, forum_id, title, topic_id):
     if title:
         sql = "INSERT INTO topics (title, forum_id, starter_uid) VALUES (:title, :forum_id, :user_id) RETURNING id"

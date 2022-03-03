@@ -3,15 +3,14 @@ from app import app
 from db import db
 from flask import render_template, request, redirect, session, abort
 import users
-import topics
-import messages
+from forums import getForums
+from messages import getTopicMessages, checkMessage, sendMessage
+from topics import getForumTopics
 
 @app.route("/")
 @app.route("/index")
 def index():
-    sql = "SELECT id, name, description FROM forums"
-    result = db.session.execute(sql)
-    forums = result.fetchall()
+    forums = getForums()
     return render_template("index.html", forums=forums)
               
 @app.route("/logout")
@@ -49,16 +48,12 @@ def login():
 
 @app.route("/<int:forum_id>/<int:topic_id>")
 def topic(forum_id, topic_id):
-    sql = "SELECT M.content, U.username, M.sent_at as id FROM messages M, users U WHERE M.user_id=U.id and M.topic_id=:topicid ORDER BY M.id"
-    result = db.session.execute(sql, {"topicid":topic_id})
-    messages = result.fetchall()
+    messages = getTopicMessages(topic_id)
     return render_template("topic.html", messages=messages, forum_id=forum_id, topic_id=topic_id)
 
 @app.route("/<int:forum_id>")
 def subforum(forum_id):
-    sql = "select distinct on (m.topic_id) m.topic_id, t.title,  u.username, m.content, m.sent_at from messages m left join topics t on m.topic_id = t.id left join users u on u.id = m.user_id where t.forum_id = :forum_id"
-    result = db.session.execute(sql, {"forum_id":forum_id})
-    topics = result.fetchall()
+    topics = getForumTopics(forum_id)
     return render_template("forum.html", topics=topics, forum_id=forum_id)
 
 @app.route("/<int:forum_id>/<int:topic_id>/newmessage", methods=["GET", "POST"])
@@ -74,9 +69,9 @@ def send(forum_id, topic_id=None):
             title = request.form["title"]
         content = request.form["content"]
         user_id = users.user_id()
-        sent = messages.checkMessage(content, title) 
+        sent = checkMessage(content, title) 
         if sent == True:
-            messages.sendMessage(content, user_id, forum_id, title, topic_id)
+            sendMessage(content, user_id, forum_id, title, topic_id)
             return redirect("/" + str(forum_id))
         return render_template("error.html", error=sent)
 
