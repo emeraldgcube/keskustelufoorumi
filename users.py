@@ -21,10 +21,9 @@ def login(username, password):
 def logout():
     session.clear()
 
-def hasRights(wantedrights):
-    if session["rights"] == wantedrights:
-        return True
-    return False
+def getRights(wantedrights):
+    return session["rights"]
+
 
 def changeRights(username, newrights):
     sql = "UPDATE users SET rights = :rights WHERE username = :username"
@@ -32,7 +31,7 @@ def changeRights(username, newrights):
     db.session.commit()
 
 def recordBan(username, message):
-    user_id = findUserId(username)
+    user_id = findUserId(username)[0]
     sql = "INSERT INTO bans (user_id, given_at, reason) VALUES (:user_id, NOW(), :message)"
     db.session.execute(sql, {"user_id":user_id, "message":message})
     db.session.commit()

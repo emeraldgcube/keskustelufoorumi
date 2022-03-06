@@ -1,22 +1,24 @@
+{% extends "layout.html" %}
+{% block title %} Etusivu{% endblock %}
+{% block content %}
 <form action="/controlusers" method="post">
 Hallitse foorumin käyttäjiä
 <p>
 Käyttäjä: <input type = "text" name = "username">
 <p>
 Toiminto:<p>
-  <input type="radio" id="makemod" name="newrights" value="moderator">
-  <label for="makemod">Make moderator</label>
-  <input type="radio" id="makeadmin" name="newrights" value="admin">
-  <label for="makeadmin">Make admin</label>
-  <input type="radio" id="makenormaluser" name="newrights" value="user">
-  <label for="makenormaluser">Remove mod/admin</label>
-  <input type="radio" id="banuser" 
-  
-  name="newrights" value="banned">
-  <label for="banuser">Ban</label><br></br>
+  <input type="radio" name="newrights" value="moderator"> Make mod
+
+{% if session["rights"] == "admin" %}
+  <input type="radio" name="newrights" value="admin"> Make admin
+{% endif %}
+  <input type="radio" name="newrights" value="user"> Remove mod/admin
+  <input type="radio" name="newrights" value="banned"> Ban
+  <br>
   Bannauksen syy:
   <textarea name="banreason" rows="2" cols="50"></textarea>
 
 
 <input type="submit" value="Muuta oikeudet">
 </form>
+{% endblock %}

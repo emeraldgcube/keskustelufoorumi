@@ -3,10 +3,15 @@ from db import db
 import users
 import sys
 
-def getTopicMessages(topic_id):
-    sql = "SELECT T.title, U.username, M.sent_at, U.user FROM messages M, users U WHERE M.user_id=U.id ORDER BY M.id"
-    result = db.session.execute(sql, {"topic":topic_id})
+def getTopicContent(topic_id):
+    sql = "SELECT M.content, U.username, M.sent_at  FROM messages M, users U WHERE M.user_id=U.id and M.topic_id=:topic_id ORDER BY M.id"
+    result = db.session.execute(sql, {"topic_id":topic_id})
     messages = result.fetchall()
+    sql = "SELECT title FROM topics WHERE id=:topic_id"
+    result = db.session.execute(sql, {"topic_id":topic_id})
+    title = result.fetchone()
+    return messages, title
+
 
 def sendMessage(content, user_id, forum_id, title, topic_id):
     if title:
