@@ -25,7 +25,7 @@ def sendMessage(content, user_id, forum_id, title, topic_id):
 ### palauttaa True jos viesti on sopiva, virheilmoituksen jos viallinen
 def checkMessage(content, title):
     user_id = users.user_id()
-    print (content + "#####", file=sys.stdout)
+    rights = users.getRights()
     if user_id == 0:
         return "Et ole kirjautunut"
     if title:
@@ -33,6 +33,9 @@ def checkMessage(content, title):
             return "Otsikko on liian pitkä"
     if len(content) > 5000:
         return "Viesti on liian pitkä"
-    if title=="" or not content:
+    if title == "" or not content:
         return "Otsikko tai viesti puuttuu"
+    if rights == "banned":
+        reason = users.getBanReason()
+        return f"Sinulla ei ole oikeutta postata, syy: {reason[0]} \n banni annettu: {reason[1]}"
     return True

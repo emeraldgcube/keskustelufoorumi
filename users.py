@@ -21,7 +21,7 @@ def login(username, password):
 def logout():
     session.clear()
 
-def getRights(wantedrights):
+def getRights():
     return session["rights"]
 
 
@@ -35,6 +35,13 @@ def recordBan(username, message):
     sql = "INSERT INTO bans (user_id, given_at, reason) VALUES (:user_id, NOW(), :message)"
     db.session.execute(sql, {"user_id":user_id, "message":message})
     db.session.commit()
+
+def getBanReason():
+    user_id = session.get("user_id",0)
+    sql = "SELECT reason, given_at FROM bans WHERE user_id = :user_id ORDER BY given_at DESC" 
+    result = db.session.execute(sql, {"user_id":user_id})
+    latestreason = result.fetchone()
+    return latestreason
 
 #tarpeellinen?
 def findUserId(username):
@@ -58,3 +65,4 @@ def register(username, password):
 
 def user_id():
     return session.get("user_id",0)
+

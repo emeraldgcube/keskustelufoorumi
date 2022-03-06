@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 {% block title %} Foorumi {% endblock %}
 {% block content %}
-<hr>
 {% if topics %}
 {% for topic in topics %}
 <i>Aihe: </i><a href="/{{forum_id}}/{{topic[0]}}">{{ topic[1] }}</a>

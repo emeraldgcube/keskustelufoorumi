@@ -6,10 +6,10 @@
 <h3>Foorumit</h3>
 {% if forums %}
 {% for forum in forums %}
-
+{% if not forum[3] or (forum[3] and session.rights in ["moderator", "admin"]) %}
 <b><li><a href="/{{forum[0]}}">{{forum[1]}}</a></li></b> 
 {{forum[2]}}
-
+{% endif %}
     {% endfor %}
     {% endif %}
 <br>
