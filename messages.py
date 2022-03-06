@@ -15,7 +15,7 @@ def getTopicContent(topic_id):
 
 def sendMessage(content, user_id, forum_id, title, topic_id):
     if title:
-        sql = "INSERT INTO topics (title, forum_id, starter_uid) VALUES (:title, :forum_id, :user_id) RETURNING id"
+        sql = "INSERT INTO topics (title, forum_id) VALUES (:title, :forum_id, :user_id) RETURNING id"
         topic_id = db.session.execute(sql, {"title":title, "forum_id":forum_id, "user_id":user_id,}).fetchone()[0]
         db.session.commit()
     sql = "INSERT INTO messages (content, user_id, sent_at, topic_id) VALUES (:content, :user_id, NOW(), :topic_id)"
